@@ -1,0 +1,61 @@
+{
+  "name": "gajago-admin-new-feature-client",
+  "version": "0.0.1",
+  "description": "가자고 어드민 - 신규 메뉴 화면",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "oa-admin-dev": "webpack --env=dev --mode development",
+    "oa-admin-dev-watch": "webpack --env=dev --mode development --watch",
+    "oa-admin-prod": "webpack --env=production --mode production",
+    "oa-admin-prod-watch": "webpack --env=production --mode production --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@lqt/lqt-ui": "^1.0.0",
+    "axios": "^0.19.2",
+    "lodash-es": "^4.17.15",
+    "react-custom-scrollbars": "^4.2.1",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.9.5",
+    "@babel/plugin-proposal-optional-chaining": "^7.9.0",
+    "@babel/plugin-proposal-private-methods": "^7.8.3",
+    "@babel/plugin-transform-async-to-generator": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-react": "^7.9.4",
+    "@babel/preset-typescript": "^7.9.0",
+    "@types/node": "^13.11.1",
+    "@types/react": "^16.9.31",
+    "@types/react-dom": "^16.9.6",
+    "babel-loader": "^8.1.0",
+    "babel-preset-react-app": "^9.1.2",
+    "css-loader": "^3.5.2",
+    "pnp-webpack-plugin": "^1.6.4",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "source-map-loader": "^0.2.4",
+    "style-loader": "^1.1.4",
+    "styled-jsx": "^3.2.5",
+    "terser-webpack-plugin": "^2.3.5",
+    "ts-loader": "^6.2.2",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  },
+  "peerDependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "styled-jsx": "^3.2.5"
+  }
+}
