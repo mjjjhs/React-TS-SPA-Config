@@ -1,12 +1,36 @@
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const PnpWebpackPlugin = require('pnp-webpack-plugin');
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const webpack = require('webpack');
 
-module.exports = env => {
-    let optimization = {};
-    if( env !== 'dev') {
+const isDevelopment = process.env.NODE_ENV || 'development';
+
+module.exports = (env) => {
+    let optimization = {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
+        }
+    };
+    if( isDevelopment !== 'development') {
         optimization = {
+            splitChunks: {
+                cacheGroups: {
+                    commons: {
+                        test: /[\\/]node_modules[\\/]/,
+                        name: 'vendors',
+                        chunks: 'all'
+                    }
+                }
+            },
             minimize: true,
             minimizer: [
                 new TerserPlugin({
@@ -31,10 +55,19 @@ module.exports = env => {
     return {
         devtool: 'source-map',
         entry: {
-            BrandManagement: './src/brand-management/index.tsx',
-            yanoljaCategory: './src/category-management/index.tsx',
-            OrderManagemnet: './src/order-management/index.tsx'
+            ReduxExam: './src/react-redux/index.tsx',
+
         } ,
+        devServer: {
+            hot: true,
+            contentBase: path.resolve("./dist"),
+            index: "index.html",
+            host: '0.0.0.0',
+            port: 8080,
+            stats: {
+                color: true
+            }
+        },
         resolve: {
             extensions: ['.ts', '.tsx', '.js'],
             modules: ['node_modules'],
@@ -52,8 +85,8 @@ module.exports = env => {
             ]
         },
         output: {
-            path: path.resolve(__dirname, "../main/webapp/static/js/view/dist"),
-            filename: '[name].bundle.js'
+            path: path.resolve(__dirname, "dist"),
+            filename: isDevelopment === 'development' ? '[name].bundle.js' : '[name].[contenthash].bundle.js'
         },
         module: {
             strictExportPresence: true,
@@ -62,6 +95,15 @@ module.exports = env => {
                     parser: {
                         requireEnsure: false
                     }
+                },
+                {
+                    test: /\.html$/,
+                    use: [
+                        {
+                            loader: "html-loader",
+                            options: { minimize: true }
+                        }
+                    ]
                 },
                 {
                     test: /\.(js)$/,
@@ -92,33 +134,67 @@ module.exports = env => {
                     ]
                 },
                 {
-                    test: /\.(tsx|ts)$/,
-                    include: [
-                        path.resolve(__dirname, "node_modules/@lqt/tti")
-                    ],
-                    use: [
-                        {
-                            loader: 'ts-loader',
-                            options: {
-                                allowTsInNodeModules : true,
-                                compilerOptions: {
-                                    "noEmit": false
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
                     test: /\.js$/,
                     use: ["source-map-loader"],
                     enforce: "pre"
+                },
+                {
+                    test: /\.(png|svg|jpg|gif)$/,
+                    use: [
+                        'file-loader',
+                    ],
+                },
+                {
+                    test: /\.(woff|woff2|eot|ttf|otf)$/,
+                    use: [
+                        'file-loader',
+                    ],
+                },
+                {
+                    test: /\.css$/,
+                    use: [
+                        isDevelopment === 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,
+                        "css-loader"
+                    ]
+                },
+                {
+                    test: /\.s[ac]ss$/i,
+                    use: [
+                        // fallback to style-loader in development
+                        isDevelopment === 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,
+                        'css-loader',
+                        {
+                            loader: 'sass-loader',
+                            options: {
+                                sourceMap: isDevelopment === 'development'
+                            }
+                        }
+                    ]
                 }
             ]
         },
         plugins: [
-            new webpack.DefinePlugin({
-                ENV: JSON.stringify(env)
-            })
+            // new webpack.DefinePlugin({
+            //     ENV: JSON.stringify(env)
+            // }),
+            new HtmlWebPackPlugin({
+                title: isDevelopment === 'development' ? 'Dev' : 'Prod',
+                favicon: '',
+                meta: {
+                    'viewport': 'width=device-width, initial-scale=1, shrink-to-fit=no',
+                    // Will generate: <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                    'theme-color': '#4285f4'
+                    // Will generate: <meta name="theme-color" content="#4285f4">
+                },
+                showErrors: true,
+                template: './public/index.html', // public/index.html 파일을 읽는다.
+                filename: 'index.html' // output으로 출력할 파일은 index.html 이다.
+            }),
+            new MiniCssExtractPlugin({
+                filename: isDevelopment === 'development' ? '[name].css' : '[name].[contenthash].css',
+                chunkFilename: isDevelopment === 'development' ? '[id].css' : '[id].[contenthash].css'
+            }),
+            new CleanWebpackPlugin()
         ],
         optimization
     };
