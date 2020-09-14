@@ -62,7 +62,6 @@ module.exports = (env) => {
             hot: true,
             contentBase: path.resolve("./dist"),
             index: "index.html",
-            host: '0.0.0.0',
             port: 8080,
             stats: {
                 color: true
@@ -96,15 +95,15 @@ module.exports = (env) => {
                         requireEnsure: false
                     }
                 },
-                {
-                    test: /\.html$/,
-                    use: [
-                        {
-                            loader: "html-loader",
-                            options: { minimize: true }
-                        }
-                    ]
-                },
+                // {
+                //     test: /\.html$/,
+                //     use: [
+                //         {
+                //             loader: "html-loader",
+                //             options: { minimize: true }
+                //         }
+                //     ]
+                // },
                 {
                     test: /\.(js)$/,
                     include: [
@@ -179,6 +178,7 @@ module.exports = (env) => {
             // }),
             new HtmlWebPackPlugin({
                 title: isDevelopment === 'development' ? 'Dev' : 'Prod',
+                minify: true,
                 favicon: '',
                 meta: {
                     'viewport': 'width=device-width, initial-scale=1, shrink-to-fit=no',
