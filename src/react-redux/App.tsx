@@ -1,14 +1,36 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
-import * as ReactDOM from 'react-dom';
+import {connect} from 'react-redux';
+import {addUser} from "./actions/User";
+import User from './components/User';
+import {IAddUser, IUserInfo} from "./interfaces/User";
+import UserStyle from "./styles/UserStyle";
+import GlobalStyle from "./styles/GlobalStyle";
+let curId = 1;
 
-function App() {
+function App({users, addUser}: {users: IUserInfo[], addUser: IAddUser}) {
+    console.log('users::', users);
     return (
         <React.Fragment>
-            <div>Hello.</div>
-            {/*<style jsx>{}</style>*/}
+            {
+                users.map((user) => {
+                    return (
+                        <User key={user.id} user={user} />
+                    );
+                })
+            }
+            <div>
+                <button onClick={() => {
+                    addUser({id: curId, name: `지훈_${curId}`});
+                    ++curId;
+                }}>사용자 추가</button>
+            </div>
+            <style jsx>{GlobalStyle}</style>
         </React.Fragment>
     );
 }
 
-export default App;
+
+export default connect(
+    (state: IUserInfo[]): IUserInfo[] => state,
+    { addUser }
+)(App);;
