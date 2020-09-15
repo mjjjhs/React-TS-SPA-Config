@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@lqt/lqt-ui": "^1.0.0",
     "axios": "^0.19.2",
     "lodash-es": "^4.17.15",
     "react-custom-scrollbars": "^4.2.1",
