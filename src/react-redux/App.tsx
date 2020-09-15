@@ -8,7 +8,6 @@ import GlobalStyle from "./styles/GlobalStyle";
 let curId = 1;
 
 function App({users, addUser}: {users: IUserInfo[], addUser: IAddUser}) {
-    console.log('users::', users);
     return (
         <React.Fragment>
             {

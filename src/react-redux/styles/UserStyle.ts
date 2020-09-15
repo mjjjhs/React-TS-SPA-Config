@@ -6,6 +6,4 @@ export default css`
         min-width: 250px;
         margin-bottom: 20px;
     }
-    button {
-    }  
 `;
